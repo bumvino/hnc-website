@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+/* Global color tokens */
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+/* Base page styles */
+html,
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  margin: 0;
+  padding: 0;
+}
+
+/* Improve text rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Optional: IA-style link feel */
+a {
+  text-underline-offset: 4px;
+}
