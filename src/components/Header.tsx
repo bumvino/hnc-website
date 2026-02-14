@@ -7,16 +7,22 @@ import logo from "../../public/logo.png";
 
 const menu = [
     { label: "Home", href: "/" },
-    { label: "Who We Are", href: "/about" },
-    { label: "What We Do", href: "/services" },
-    { label: "How We Do It", href: "/process" },
+    { label: "About", href: "/about" },
+    { label: "Services", href: "/services" },
+    { label: "How It Works", href: "/process" }, // remove if you delete /process
     { label: "Projects", href: "/projects" },
-    { label: "Find HNC", href: "/contact" },
+    { label: "Contact", href: "/contact" },
 ];
+
+function cx(...classes: Array<string | false | null | undefined>) {
+    return classes.filter(Boolean).join(" ");
+}
 
 export default function Header() {
     const [open, setOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
 
+    // Close on ESC
     useEffect(() => {
         function onKeyDown(e: KeyboardEvent) {
             if (e.key === "Escape") setOpen(false);
@@ -25,8 +31,33 @@ export default function Header() {
         return () => window.removeEventListener("keydown", onKeyDown);
     }, []);
 
+    // Lock body scroll when open
+    useEffect(() => {
+        document.body.style.overflow = open ? "hidden" : "";
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [open]);
+
+    // Change header style after scroll
+    useEffect(() => {
+        function onScroll() {
+            setScrolled(window.scrollY > 12);
+        }
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll);
+    }, []);
+
     return (
-        <header className="fixed top-0 z-50 w-full">
+        <header
+            className={cx(
+                "fixed top-0 z-50 w-full transition-colors",
+                scrolled
+                    ? "bg-white/90 backdrop-blur border-b border-black/10"
+                    : "bg-transparent"
+            )}
+        >
             <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-4 sm:px-6">
                 <Link
                     href="/"
@@ -35,44 +66,53 @@ export default function Header() {
                 >
                     <Image
                         src={logo}
-                        alt="Hana Contractors"
+                        alt="HNC - Hana Construction"
                         priority
-                        className="h-10 w-auto drop-shadow-md"
+                        className="h-10 w-auto"
                     />
-                    <span className="sr-only">Hana Contractors</span>
+                    <span className="sr-only">HNC - Hana Construction</span>
                 </Link>
 
-                {/* Hamburger */}
+                {/* Hamburger only */}
                 <button
                     type="button"
                     aria-label={open ? "Close menu" : "Open menu"}
                     aria-expanded={open}
                     onClick={() => setOpen((v) => !v)}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-transparent hover:bg-white/10"
+                    className={cx(
+                        "inline-flex h-10 w-10 items-center justify-center rounded-md transition",
+                        scrolled ? "hover:bg-black/5" : "hover:bg-white/10"
+                    )}
                 >
                     <span className="sr-only">Menu</span>
 
                     <span className="relative block h-4 w-5">
             <span
-                className={`absolute left-0 top-0 h-[2px] w-5 bg-white drop-shadow transition-transform ${
+                className={cx(
+                    "absolute left-0 top-0 h-[2px] w-5 drop-shadow transition-transform",
+                    scrolled ? "bg-black" : "bg-white",
                     open ? "translate-y-[7px] rotate-45" : ""
-                }`}
+                )}
             />
             <span
-                className={`absolute left-0 top-[7px] h-[2px] w-5 bg-white drop-shadow transition-opacity ${
+                className={cx(
+                    "absolute left-0 top-[7px] h-[2px] w-5 drop-shadow transition-opacity",
+                    scrolled ? "bg-black" : "bg-white",
                     open ? "opacity-0" : "opacity-100"
-                }`}
+                )}
             />
             <span
-                className={`absolute left-0 top-[14px] h-[2px] w-5 bg-white drop-shadow transition-transform ${
+                className={cx(
+                    "absolute left-0 top-[14px] h-[2px] w-5 drop-shadow transition-transform",
+                    scrolled ? "bg-black" : "bg-white",
                     open ? "translate-y-[-7px] -rotate-45" : ""
-                }`}
+                )}
             />
           </span>
                 </button>
             </div>
 
-            {/* Mobile menu */}
+            {/* Mobile dropdown (same style as your previous) */}
             {open && (
                 <div className="fixed inset-0 z-50">
                     <button
