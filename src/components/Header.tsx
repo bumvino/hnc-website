@@ -10,7 +10,6 @@ const menu = [
     { label: "About", href: "/about" },
     { label: "Services", href: "/services" },
     { label: "How It Works", href: "/process" }, // remove if you delete /process
-    { label: "Projects", href: "/projects" },
     { label: "Contact", href: "/contact" },
 ];
 

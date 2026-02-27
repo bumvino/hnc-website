@@ -4,7 +4,6 @@ const links = [
     { label: "Who We Are", href: "/about" },
     { label: "What We Do", href: "/services" },
     { label: "How We Do It", href: "/process" },
-    { label: "Projects", href: "/projects" },
     { label: "Find HNC", href: "/contact" },
 ];
 
